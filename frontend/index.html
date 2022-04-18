@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test de server de vídeo</title>
+</head>
+<body>
+    <h1>Reproductor de videos</h1>
+    <div id="video_container">
+        <div id="video_wrapper">
+            <video width="100%" id="video">
+                <source src="backend:3000/video" type="video/webm">
+            </video>
+        </div>
+        <div id="video_bottom">
+            <button id="reproducir_button">Reproducir</button>
+            <button id="pausa_button">Pausa</button>
+            <button id="adelantar_button">Adelantar</button>
+            <button id="atrasar_button">Atrasar</button>
+            <button id="subir_volumen_button">+V</button>
+            <button id="bajar_volumen_button">-V</button>
+            <span id="tiempo_video_span">0</span>/<span id="tiempo_total_span"></span>
+            <span id="volumen_video_span">Vol: 0</span>
+        </div>
+    </div>
+</body>
+<script>
+    var video = document.getElementById('video');
+    var reproducir_button = document.getElementById('reproducir_button');
+    reproducir_button.addEventListener('click', function() {
+        video.play();
+    });
+    var pausa_button = document.getElementById('pausa_button');
+    pausa_button.addEventListener('click', function() {
+        video.pause();
+    });
+    var adelantar_button = document.getElementById('adelantar_button');
+    adelantar_button.addEventListener('click', function() {
+        video.currentTime += 10;
+    });
+    var atrasar_button = document.getElementById('atrasar_button');
+    atrasar_button.addEventListener('click', function() {
+        video.currentTime -= 10;
+    });
+    var subir_volumen_button = document.getElementById('subir_volumen_button');
+    subir_volumen_button.addEventListener('click', function() {
+        video.volume += 0.1;
+        updateVolumen();
+    });
+    var bajar_volumen_button = document.getElementById('bajar_volumen_button');
+    bajar_volumen_button.addEventListener('click', function() {
+        video.volume -= 0.1;
+        updateVolumen();
+    });
+    video.addEventListener('timeupdate', function() {
+        var tiempo_video_span = document.getElementById('tiempo_video_span');
+        tiempo_video_span.innerHTML = video.currentTime;
+    });
+    video.addEventListener('loadedmetadata', function() {
+        var tiempo_total_span = document.getElementById('tiempo_total_span');
+        tiempo_total_span.innerHTML = video.duration;
+        updateVolumen();
+    });
+    function updateVolumen() {
+        var volumen_video_span = document.getElementById('volumen_video_span');
+        volumen_video_span.innerHTML = 'Vol:' + Math.floor(video.volume * 100) + '%';
+    }
+</script>
+</html>
